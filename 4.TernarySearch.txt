@@ -1,0 +1,42 @@
+def ternary_search(arr, l, r, x):
+    if r >= l:
+        mid1 = l + (r - l) // 3
+        mid2 = r - (r - l) // 3
+        
+        # Check if x is present at any mid point
+        if arr[mid1] == x:
+            return mid1
+        if arr[mid2] == x:
+            return mid2
+        
+        # If x is smaller than mid1, search in the left segment
+        if x < arr[mid1]:
+            return ternary_search(arr, l, mid1 - 1, x)
+        
+        # If x is larger than mid2, search in the right segment
+        elif x > arr[mid2]:
+            return ternary_search(arr, mid2 + 1, r, x)
+        
+        # Search in the middle segment
+        else:
+            return ternary_search(arr, mid1 + 1, mid2 - 1, x)
+    
+    # If x is not found
+    return -1
+
+n = int(input("Enter the number of members: "))
+arr = []
+print("Enter the sorted roll numbers of " + str(n) + " members:")
+for i in range(n):
+    print(f"Enter roll no of member {i+1} : ")
+    num = int(input())
+    arr.append(num)
+
+x = int(input("Enter the roll number to be searched: "))
+result = ternary_search(arr, 0, n - 1, x)
+
+if result != -1:
+    print("Roll number " + str(x) + " is present at index " + str(result) + ".")
+else:
+    print("Roll number " + str(x) + " is not present in the list.")
+

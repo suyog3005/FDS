@@ -1,0 +1,170 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int prn;
+    string name;
+    Node *next;
+
+    Node(int prn, string name) : prn(prn), name(name), next(nullptr) {}
+};
+
+class SLL {
+private:
+    Node *head, *last;
+
+public:
+    SLL() : head(nullptr), last(nullptr) {}
+
+    ~SLL() {
+        Node *temp;
+        while (head) {
+            temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    void createClub() {
+        if (head) {
+            cout << "Club is already created.\n";
+            return;
+        }
+
+        int prn;
+        string name;
+        
+        cout << "Enter PRN and Name of President: ";
+        cin >> prn >> name;
+        head = new Node(prn, name);
+
+        cout << "Enter PRN and Name of Secretary: ";
+        cin >> prn >> name;
+        last = new Node(prn, name);
+
+        head->next = last;
+        cout << "Club created successfully.\n";
+    }
+
+    void addMember() {
+        if (!head || !last) {
+            cout << "Club is not yet created.\n";
+            return;
+        }
+
+        int prn;
+        string name;
+        cout << "Enter PRN and Name of new Member: ";
+        cin >> prn >> name;
+
+        Node *newNode = new Node(prn, name);
+        newNode->next = last;
+
+        Node *temp = head;
+        while (temp->next != last) temp = temp->next;
+        temp->next = newNode;
+
+        cout << "Member added successfully.\n";
+    }
+
+    void deleteMember(int prn) {
+        if (!head || !last) {
+            cout << "Club is not yet created.\n";
+            return;
+        }
+
+        if (prn == head->prn || prn == last->prn) {
+            cout << "Cannot delete President or Secretary.\n";
+            return;
+        }
+
+        Node *temp = head, *prev = nullptr;
+        while (temp && temp->prn != prn) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if (!temp) {
+            cout << "Member not found.\n";
+            return;
+        }
+
+        prev->next = temp->next;
+        delete temp;
+        cout << "Member deleted successfully.\n";
+    }
+
+    void displayClub() {
+        if (!head) {
+            cout << "Club is empty.\n";
+            return;
+        }
+
+        cout << "Club Members:\n";
+        for (Node *temp = head; temp; temp = temp->next)
+            cout << temp->prn << "\t" << temp->name << endl;
+    }
+
+    int totalMembers() {
+        int count = 0;
+        for (Node *temp = head; temp; temp = temp->next)
+            count++;
+        return count;
+    }
+
+    void concatenate(SLL &other) {
+        if (!head || !other.head) {
+            cout << "One of the clubs is empty.\n";
+            return;
+        }
+
+        last->next = other.head;
+        last = other.last;
+        other.head = other.last = nullptr;
+        cout << "Clubs concatenated successfully.\n";
+    }
+};
+
+int main() {
+    SLL club1, club2;
+    int choice, prn;
+
+    while (true) {
+        cout << "\n1. Create Club\n2. Add Member\n3. Delete Member\n4. Display Club\n"
+             << "5. Total Members\n6. Concatenate Clubs\n7. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            club1.createClub();
+            break;
+        case 2:
+            club1.addMember();
+            break;
+        case 3:
+            cout << "Enter PRN of member to delete: ";
+            cin >> prn;
+            club1.deleteMember(prn);
+            break;
+        case 4:
+            club1.displayClub();
+            break;
+        case 5:
+            cout << "Total Members: " << club1.totalMembers() << endl;
+            break;
+        case 6:
+            cout << "Creating a second club to concatenate.\n";
+            club2.createClub();
+            club1.concatenate(club2);
+            break;
+        case 7:
+            return 0;
+        default:
+            cout << "Invalid choice. Try again.\n";
+        }
+    }
+
+    return 0;
+}
