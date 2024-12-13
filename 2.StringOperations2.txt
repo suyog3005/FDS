@@ -1,0 +1,55 @@
+print("1. Display word frequency") 
+print("2. Find substring in string") 
+print("3. Check whether string is palindrome or not") 
+print("4. Display character frequency") 
+print("5. Specify the longest word") 
+string=input("Enter a string: ") 
+def palindrome(string): 
+    str1=string[::-1] 
+    if(str1==string): 
+        print("String is a palindrome") 
+    else: 
+        print("String is not a palindrome") 
+def wordfrequency(string): 
+    words = string.split() 
+    wordfreq={} 
+    for word in words: 
+        if word in wordfreq: 
+            wordfreq[word]+=1 
+        else: 
+            wordfreq[word]=1 
+    print(str(wordfreq)) 
+def findsubstring(string): 
+    substr = input("Enter substring you want to find: ") 
+    if(string.find(substr)== -1): 
+        print("Substring is not found") 
+    else: 
+        print("Substring is found") 
+        print("Substring found at index = ",string.find(substr)) 
+def charfreq(string): 
+    allfreq= {} 
+    for i in string: 
+        if i in allfreq: 
+            allfreq[i]+=1 
+        else: 
+            allfreq[i]=1 
+    print(str(allfreq)) 
+def longest(string): 
+    longest = max(string.split(),key=len) 
+    print("Longest word is :", longest) 
+    print("Length of longest word is =", len(longest)) 
+while True: 
+    choice=input("Enter a choice: ") 
+ 
+    if choice=="1": 
+        wordfrequency(string) 
+    elif choice=="2": 
+        findsubstring(string) 
+    elif choice=="3": 
+        palindrome(string) 
+    elif choice=="4": 
+        charfreq(string) 
+    elif choice=="5": 
+        longest(string) 
+    else: 
+        print("Invalid choice")
